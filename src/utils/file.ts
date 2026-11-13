@@ -25,16 +25,40 @@ export function formatDate(date: Date): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-export function getExtension(name: string): string {
-  return name.split('.').pop()?.toLowerCase() ?? ''
+export function formatDateTime(date: Date): string {
+  return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
-export function getFileType(name: string): FileType {
+export function getExtension(name: string): string {
+  return name.includes('.') ? (name.split('.').pop()?.toLowerCase() ?? '') : ''
+}
+
+const MIME_TO_TYPE: Record<string, FileType> = {
+  'application/pdf': 'pdf',
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+}
+
+/** File type from the extension, falling back to the MIME type. */
+export function getFileType(name: string, mimeType?: string): FileType {
   const ext = getExtension(name)
   if (ext === 'pdf') return 'pdf'
   if (ext === 'png') return 'png'
   if (ext === 'jpg' || ext === 'jpeg') return 'jpg'
-  return 'other'
+  return (mimeType && MIME_TO_TYPE[mimeType.toLowerCase()]) || 'other'
+}
+
+const EXT_TO_MIME: Record<string, string> = {
+  pdf: 'application/pdf',
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+}
+
+/** MIME type for an upload — the browser's value, else derived from the extension. */
+export function resolveMimeType(file: File): string {
+  return file.type || EXT_TO_MIME[getExtension(file.name)] || 'application/octet-stream'
 }
 
 /** Only these three types can be previewed in the modal. */

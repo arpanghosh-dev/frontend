@@ -2,9 +2,16 @@ import type { DropdownOption } from '../../../components/Dropdown/Dropdown'
 import type { TabItem } from '../../../components/Tabs/Tabs'
 import type { FileItem } from '../../../types/file'
 import { MB } from '../../../utils/file'
-import type { FileCategory, SortValue, TabValue, TypeFilter } from '../types/fileManager.types'
+import type { FileListParams, SortValue, TabValue, TypeFilter } from '../types/fileManager.types'
 
+/** UI upload limit per file (the server allows up to 5120 MB) */
 export const MAX_UPLOAD_SIZE = 25 * MB
+/** Files uploaded in parallel */
+export const UPLOAD_CONCURRENCY = 3
+/** Files fetched per page */
+export const PAGE_SIZE = 20
+/** Health check polling interval */
+export const HEALTH_POLL_MS = 30_000
 
 export const TYPE_FILTERS: Record<TypeFilter, { label: string; accept: string; hint: string }> = {
   all: { label: 'All File Types', accept: '.png,.jpg,.jpeg,.pdf', hint: 'PNG, JPG, PDF up to 25MB' },
@@ -24,6 +31,14 @@ export const SORT_OPTIONS: DropdownOption<SortValue>[] = [
   { value: 'size', label: 'Size' },
 ]
 
+/** UI sort → API query params */
+export const SORT_PARAMS: Record<SortValue, Pick<FileListParams, 'sortBy' | 'order'>> = {
+  recent: { sortBy: 'createdAt', order: 'desc' },
+  oldest: { sortBy: 'createdAt', order: 'asc' },
+  name: { sortBy: 'originalName', order: 'asc' },
+  size: { sortBy: 'fileSize', order: 'desc' },
+}
+
 export const TAB_ITEMS: TabItem<TabValue>[] = [
   { value: 'all', label: 'All Files' },
   { value: 'pdf', label: 'PDFs' },
@@ -31,26 +46,10 @@ export const TAB_ITEMS: TabItem<TabValue>[] = [
   { value: 'image', label: 'Images' },
 ]
 
-export const SORTERS: Record<SortValue, (a: FileItem, b: FileItem) => number> = {
-  recent: (a, b) => b.addedAt.getTime() - a.addedAt.getTime(),
-  oldest: (a, b) => a.addedAt.getTime() - b.addedAt.getTime(),
-  name: (a, b) => a.name.localeCompare(b.name),
-  size: (a, b) => b.size - a.size,
-}
-
-/** Icon + colour for each server-side category */
-export const CATEGORY_STYLE: Record<FileCategory, Pick<FileItem, 'icon' | 'tone'>> = {
-  document: { icon: 'file-text', tone: 'red' },
-  asset: { icon: 'image', tone: 'sky' },
-  diagram: { icon: 'chart', tone: 'purple' },
-  photo: { icon: 'camera', tone: 'blue' },
-  signed: { icon: 'shield-check', tone: 'indigo' },
-}
-
-/** Fallback presentation by file type when the server sends no category/label */
-export const TYPE_DEFAULTS: Record<FileItem['type'], Pick<FileItem, 'icon' | 'tone' | 'badge'>> = {
+/** Icon, colour and badge per file type */
+export const TYPE_PRESENTATION: Record<FileItem['type'], Pick<FileItem, 'icon' | 'tone' | 'badge'>> = {
   pdf: { icon: 'file-text', tone: 'red', badge: 'PDF Document' },
   png: { icon: 'image', tone: 'sky', badge: 'PNG Image' },
-  jpg: { icon: 'image', tone: 'blue', badge: 'JPG Image' },
+  jpg: { icon: 'camera', tone: 'blue', badge: 'JPG Image' },
   other: { icon: 'file', tone: 'indigo', badge: 'File' },
 }

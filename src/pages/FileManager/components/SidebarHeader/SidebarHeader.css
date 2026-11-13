@@ -11,7 +11,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  color: #fff;
+  color: var(--on-primary);
   background: var(--primary);
   border-radius: 8px;
 }
@@ -24,12 +24,14 @@
   padding: 3px 10px;
   font-size: 11.5px;
   font-weight: 600;
-  color: #047857;
+  color: var(--success-fg);
   background: var(--success-soft);
-  border: 1px solid #a7f3d0;
+  border: 1px solid var(--success-border);
   border-radius: 999px;
   white-space: nowrap;
+  cursor: pointer;
 }
+.status-pill:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary-ring); }
 .status-pill::before {
   content: "";
   width: 6px;
@@ -37,6 +39,8 @@
   background: currentColor;
   border-radius: 50%;
 }
-.status-pill.is-busy { color: var(--primary); background: var(--primary-soft); border-color: #c7d2fe; }
+.status-pill.is-busy { color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border); }
 .status-pill.is-busy::before { animation: pulse 1s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.25; } }
+.status-pill.is-warning { color: var(--warning-fg); background: var(--warning-soft); border-color: var(--warning-border); }
+.status-pill.is-offline { color: var(--danger); background: var(--danger-soft); border-color: var(--danger-border); }

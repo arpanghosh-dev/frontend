@@ -2,44 +2,142 @@
    Global design tokens, reset and shared tone classes
    ========================================================================== */
 :root {
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --primary-soft: #eef2ff;
-  --primary-ring: rgba(79, 70, 229, 0.18);
+  /* ---------- Shared (theme independent) ---------- */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
 
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-2: #f8fafc;
-  --border: #e5e7eb;
-  --border-strong: #d1d5db;
-  --border-dashed: #cbd5e1;
+/* ==========================================================================
+   Dark theme (default) — soft charcoal, teal accent, no pure black/white
+   ========================================================================== */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
-  --text: #0f172a;
-  --text-2: #334155;
-  --muted: #64748b;
-  --subtle: #94a3b8;
+  --primary: #2dd4bf;
+  --primary-hover: #5eead4;
+  --primary-soft: rgba(45, 212, 191, 0.12);
+  --primary-ring: rgba(45, 212, 191, 0.3);
+  --primary-border: rgba(45, 212, 191, 0.35);
+  --primary-track: rgba(45, 212, 191, 0.14);
+  --primary-stripe: rgba(45, 212, 191, 0.45);
+  --primary-shadow: rgba(45, 212, 191, 0.18);
+  --on-primary: #05221f;
+
+  --bg: #0f1214;
+  --surface: #161a1d;
+  --surface-2: #1c2125;
+  --border: #272d32;
+  --border-strong: #363d43;
+  --border-dashed: #3b4349;
+  --divider: #21272b;
+
+  --text: #e6e9eb;
+  --text-2: #c4cacf;
+  --muted: #8d969d;
+  --subtle: #6c757c;
+
+  --danger: #fb7185;
+  --danger-solid: #e11d48;
+  --danger-hover: #f43f5e;
+  --danger-soft: rgba(251, 113, 133, 0.12);
+  --danger-border: rgba(251, 113, 133, 0.3);
+  --danger-ring: rgba(251, 113, 133, 0.25);
+
+  --success: #34d399;
+  --success-fg: #6ee7b7;
+  --success-soft: rgba(52, 211, 153, 0.12);
+  --success-border: rgba(52, 211, 153, 0.3);
+
+  --warning: #f59e0b;
+  --warning-fg: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, 0.12);
+  --warning-border: rgba(251, 191, 36, 0.3);
+
+  --tone-red-bg: rgba(251, 113, 133, 0.12);   --tone-red-fg: #fb7185;    --tone-red-bd: rgba(251, 113, 133, 0.3);
+  --tone-sky-bg: rgba(56, 189, 248, 0.12);    --tone-sky-fg: #38bdf8;    --tone-sky-bd: rgba(56, 189, 248, 0.3);
+  --tone-purple-bg: rgba(192, 132, 252, 0.12); --tone-purple-fg: #c084fc; --tone-purple-bd: rgba(192, 132, 252, 0.3);
+  --tone-blue-bg: rgba(96, 165, 250, 0.12);   --tone-blue-fg: #60a5fa;   --tone-blue-bd: rgba(96, 165, 250, 0.3);
+  --tone-indigo-bg: rgba(45, 212, 191, 0.12); --tone-indigo-fg: #2dd4bf; --tone-indigo-bd: rgba(45, 212, 191, 0.3);
+
+  --skeleton-a: #1c2125;
+  --skeleton-b: #262c31;
+  --checker-a: #1a1f22;
+  --checker-b: #22282c;
+  --pdf-stage: #0b0e10;
+  --overlay: rgba(4, 6, 8, 0.68);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 24px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 12px 32px -10px rgba(0, 0, 0, 0.55);
+}
+
+/* ==========================================================================
+   Light theme — warm off-white instead of stark white, same teal accent
+   ========================================================================== */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-soft: #f0fdfa;
+  --primary-ring: rgba(13, 148, 136, 0.2);
+  --primary-border: #99f6e4;
+  --primary-track: #ccfbf1;
+  --primary-stripe: #5eead4;
+  --primary-shadow: rgba(13, 148, 136, 0.22);
+  --on-primary: #ffffff;
+
+  --bg: #f4f6f5;
+  --surface: #fcfdfc;
+  --surface-2: #f4f6f5;
+  --border: #e2e6e4;
+  --border-strong: #cfd5d2;
+  --border-dashed: #c3cbc7;
+  --divider: #edf0ee;
+
+  --text: #16201d;
+  --text-2: #34413d;
+  --muted: #5f6b67;
+  --subtle: #8b9692;
 
   --danger: #e11d48;
+  --danger-solid: #e11d48;
   --danger-hover: #be123c;
   --danger-soft: #fff1f2;
-  --success: #10b981;
-  --success-soft: #ecfdf5;
+  --danger-border: #fecdd3;
+  --danger-ring: rgba(225, 29, 72, 0.18);
 
-  /* File-type tones */
+  --success: #10b981;
+  --success-fg: #047857;
+  --success-soft: #ecfdf5;
+  --success-border: #a7f3d0;
+
+  --warning: #f59e0b;
+  --warning-fg: #b45309;
+  --warning-soft: #fffbeb;
+  --warning-border: #fde68a;
+
   --tone-red-bg: #fff1f2;    --tone-red-fg: #e11d48;    --tone-red-bd: #fecdd3;
   --tone-sky-bg: #f0f9ff;    --tone-sky-fg: #0284c7;    --tone-sky-bd: #bae6fd;
   --tone-purple-bg: #faf5ff; --tone-purple-fg: #9333ea; --tone-purple-bd: #e9d5ff;
   --tone-blue-bg: #eff6ff;   --tone-blue-fg: #2563eb;   --tone-blue-bd: #bfdbfe;
-  --tone-indigo-bg: #eef2ff; --tone-indigo-fg: #4f46e5; --tone-indigo-bd: #c7d2fe;
+  --tone-indigo-bg: #f0fdfa; --tone-indigo-fg: #0d9488; --tone-indigo-bd: #99f6e4;
 
-  --radius-sm: 6px;
-  --radius: 10px;
-  --radius-lg: 14px;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 20px 45px -12px rgba(15, 23, 42, 0.25);
+  --skeleton-a: #eef1ef;
+  --skeleton-b: #e2e6e4;
+  --checker-a: #f4f6f5;
+  --checker-b: #e9edeb;
+  --pdf-stage: #e2e6e4;
+  --overlay: rgba(16, 24, 22, 0.45);
 
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 22, 0.05);
+  --shadow: 0 1px 3px rgba(16, 24, 22, 0.06), 0 1px 2px rgba(16, 24, 22, 0.04);
+  --shadow-lg: 0 20px 45px -12px rgba(16, 24, 22, 0.25);
+  --shadow-pop: 0 10px 30px -10px rgba(16, 24, 22, 0.2);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -54,7 +152,11 @@ body {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+/* Themed scrollbars */
+* { scrollbar-color: var(--border-strong) transparent; }
 
 button, input, select { font: inherit; color: inherit; }
 

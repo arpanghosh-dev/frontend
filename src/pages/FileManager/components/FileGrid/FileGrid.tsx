@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Button } from '../../../../components/Button/Button'
 import { FileCard } from '../../../../components/FileCard/FileCard'
 import { Icon } from '../../../../components/Icon/Icon'
@@ -7,12 +8,29 @@ import './FileGrid.css'
 
 const SKELETON_COUNT = 6
 
-/** Card grid with loading, error and empty states. */
+/** Card grid with infinite scroll + loading, error and empty states. */
 export function FileGrid() {
-  const { files, isPending, isError, error, refetch } = useVisibleFiles()
+  const { files, isPending, isError, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage, isPlaceholderData } =
+    useVisibleFiles()
   const recentIds = useFileManagerStore((s) => s.recentIds)
+  const search = useFileManagerStore((s) => s.search)
   const openPreview = useFileManagerStore((s) => s.openPreview)
   const openDelete = useFileManagerStore((s) => s.openDelete)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  // Load the next page when the bottom of the grid scrolls into view
+  useEffect(() => {
+    const node = sentinelRef.current
+    if (!node || !hasNextPage) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isFetchingNextPage) fetchNextPage()
+      },
+      { rootMargin: '200px' },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   if (isPending) {
     return (
@@ -24,7 +42,7 @@ export function FileGrid() {
     )
   }
 
-  if (isError) {
+  if (isError && !files.length) {
     return (
       <div className="file-grid__state file-grid__state--error" role="alert">
         <span className="file-grid__state-icon">
@@ -32,36 +50,56 @@ export function FileGrid() {
         </span>
         <p className="file-grid__state-title">Couldn't load files</p>
         <p className="file-grid__state-text">{error.message}</p>
-        <Button variant="secondary" size="sm" onClick={() => refetch()}>
+        <Button variant="secondary" size="sm" icon="refresh" onClick={() => refetch()}>
           Try again
         </Button>
       </div>
     )
   }
 
+  const loadMore = hasNextPage && (
+    <div className="file-grid__more" ref={sentinelRef}>
+      <Button variant="secondary" size="sm" disabled={isFetchingNextPage} onClick={() => fetchNextPage()}>
+        {isFetchingNextPage ? 'Loading…' : 'Load more'}
+      </Button>
+    </div>
+  )
+
   if (!files.length) {
     return (
-      <div className="file-grid__state">
-        <span className="file-grid__state-icon">
-          <Icon name="inbox" size={22} />
-        </span>
-        <p className="file-grid__state-title">No files here yet</p>
-        <p className="file-grid__state-text">Upload a file from the panel on the left, or switch filters.</p>
-      </div>
+      <>
+        <div className="file-grid__state">
+          <span className="file-grid__state-icon">
+            <Icon name={search ? 'search' : 'inbox'} size={22} />
+          </span>
+          <p className="file-grid__state-title">{search ? 'No matching files' : 'No files here yet'}</p>
+          <p className="file-grid__state-text">
+            {search
+              ? `Nothing matches “${search.trim()}”. Try a different name.`
+              : hasNextPage
+                ? 'None of the loaded files match this filter — load more to keep looking.'
+                : 'Upload a file from the panel on the left, or switch filters.'}
+          </p>
+        </div>
+        {loadMore}
+      </>
     )
   }
 
   return (
-    <div className="file-grid">
-      {files.map((file) => (
-        <FileCard
-          key={file.id}
-          file={file}
-          isNew={recentIds.includes(file.id)}
-          onPreview={openPreview}
-          onDelete={openDelete}
-        />
-      ))}
-    </div>
+    <>
+      <div className={`file-grid${isPlaceholderData ? ' is-refreshing' : ''}`}>
+        {files.map((file) => (
+          <FileCard
+            key={file.id}
+            file={file}
+            isNew={recentIds.includes(file.id)}
+            onPreview={openPreview}
+            onDelete={openDelete}
+          />
+        ))}
+      </div>
+      {loadMore}
+    </>
   )
 }

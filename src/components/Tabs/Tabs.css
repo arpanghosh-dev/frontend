@@ -14,7 +14,7 @@
 }
 .tabs__tab:hover { background: var(--surface-2); color: var(--text); }
 .tabs__tab:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary-ring); }
-.tabs__tab[aria-selected="true"] { background: var(--primary); color: #fff; }
+.tabs__tab[aria-selected="true"] { background: var(--primary); color: var(--on-primary); }
 
 .tabs__count {
   margin-left: 6px;

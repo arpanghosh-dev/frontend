@@ -6,12 +6,14 @@
 }
 .quota__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .quota__title { font-size: 12.5px; font-weight: 600; color: var(--text); }
+.quota__head-end { display: flex; align-items: center; gap: 6px; }
 .quota__percent { font-size: 12.5px; font-weight: 700; color: var(--primary); }
 
 .quota__track {
+  display: flex;
   height: 7px;
   overflow: hidden;
-  background: #e0e7ff;
+  background: var(--primary-track);
   border-radius: 999px;
 }
 .quota__bar {
@@ -20,9 +22,13 @@
   border-radius: inherit;
   transition: width 0.4s ease;
 }
-.quota.is-warning .quota__bar { background: #f59e0b; }
-.quota.is-warning .quota__percent { color: #d97706; }
-.quota.is-critical .quota__bar { background: var(--danger); }
+.quota__bar--reserved {
+  background: repeating-linear-gradient(-45deg, var(--primary-stripe) 0 4px, var(--primary-track) 4px 8px);
+  border-radius: 0;
+}
+.quota.is-warning .quota__bar:not(.quota__bar--reserved) { background: var(--warning); }
+.quota.is-warning .quota__percent { color: var(--warning-fg); }
+.quota.is-critical .quota__bar:not(.quota__bar--reserved) { background: var(--danger); }
 .quota.is-critical .quota__percent { color: var(--danger); }
 
 .quota__foot {
@@ -31,4 +37,12 @@
   margin-top: 8px;
   font-size: 11.5px;
   color: var(--muted);
+}
+
+.quota__caption {
+  margin: 8px 0 0;
+  padding-top: 8px;
+  font-size: 11.5px;
+  color: var(--muted);
+  border-top: 1px dashed var(--border);
 }

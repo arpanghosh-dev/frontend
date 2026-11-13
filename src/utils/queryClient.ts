@@ -8,8 +8,9 @@ export const queryClient = new QueryClient({
       staleTime: 30_000, // data counts as fresh for 30s
       gcTime: 5 * 60_000, // unused cache kept for 5 min
       retry: (failureCount, error) => {
-        const status = (error as ApiError | undefined)?.status
-        if (status && status >= 400 && status < 500) return false // don't retry client errors
+        if (error.isCancelled) return false
+        if (error.status && error.status >= 400 && error.status < 500) return false // client errors won't fix themselves
+        if (error.code === 'INVALID_RESPONSE' || error.code === 'VALIDATION_ERROR') return false
         return failureCount < 2
       },
       refetchOnWindowFocus: false,
@@ -20,6 +21,7 @@ export const queryClient = new QueryClient({
   },
 })
 
+// Every query/mutation error is typed as ApiError (see utils/axios.ts)
 declare module '@tanstack/react-query' {
   interface Register {
     defaultError: ApiError

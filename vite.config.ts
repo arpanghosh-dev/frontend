@@ -1,11 +1,20 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    // Keep PDFs as real files (browsers won't render data: URL PDFs in an iframe)
-    assetsInlineLimit: (filePath) => (filePath.endsWith('.pdf') ? false : undefined),
-  },
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    plugins: [react()],
+    server: {
+      // Forward /api/* to the backend so the browser talks to one origin in dev
+      proxy: {
+        '/api': {
+          target: env.VITE_API_PROXY_TARGET || 'http://localhost:5000',
+          changeOrigin: true,
+        },
+      },
+    },
+  }
 })

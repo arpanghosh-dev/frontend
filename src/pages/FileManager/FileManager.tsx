@@ -1,5 +1,5 @@
 import { FileGrid } from './components/FileGrid/FileGrid'
-import { FileModal } from './components/FileModal/FileModal'
+import { FileManagerModal } from './components/FileManagerModal/FileManagerModal'
 import { FilesHeader } from './components/FilesHeader/FilesHeader'
 import { FilesToolbar } from './components/FilesToolbar/FilesToolbar'
 import { SidebarHeader } from './components/SidebarHeader/SidebarHeader'
@@ -27,7 +27,7 @@ export function FileManager() {
         </section>
       </main>
 
-      <FileModal />
+      <FileManagerModal />
     </div>
   )
 }

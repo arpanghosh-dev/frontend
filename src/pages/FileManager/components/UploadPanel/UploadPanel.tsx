@@ -2,33 +2,34 @@ import { useRef } from 'react'
 import { Button } from '../../../../components/Button/Button'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 import { FileDropzone, type FileDropzoneHandle } from '../../../../components/FileDropzone/FileDropzone'
-import { StagedFileList } from '../../../../components/StagedFileList/StagedFileList'
+import { UploadQueue } from '../../../../components/UploadQueue/UploadQueue'
 import { MAX_UPLOAD_SIZE, TYPE_FILTERS, TYPE_FILTER_OPTIONS } from '../../constants/fileManager.constants'
-import { useUploadFiles } from '../../hooks/useUploadFiles'
+import { useIsUploading, useUploadFiles } from '../../hooks/useUploadFiles'
 import { useFileManagerStore } from '../../store/useFileManagerStore'
 import './UploadPanel.css'
 
-/** Dropzone + type pre-filter + upload button + selected-file list. */
+/** Dropzone + type pre-filter + upload button + upload queue. */
 export function UploadPanel() {
   const dropzoneRef = useRef<FileDropzoneHandle>(null)
   const typeFilter = useFileManagerStore((s) => s.typeFilter)
-  const staged = useFileManagerStore((s) => s.staged)
+  const uploads = useFileManagerStore((s) => s.uploads)
   const dropError = useFileManagerStore((s) => s.dropError)
   const setTypeFilter = useFileManagerStore((s) => s.setTypeFilter)
-  const addStaged = useFileManagerStore((s) => s.addStaged)
-  const removeStaged = useFileManagerStore((s) => s.removeStaged)
-  const clearStaged = useFileManagerStore((s) => s.clearStaged)
+  const addFiles = useFileManagerStore((s) => s.addFiles)
+  const removeUpload = useFileManagerStore((s) => s.removeUpload)
 
-  const upload = useUploadFiles()
+  const { uploadQueued, retry, cancel } = useUploadFiles()
+  const uploading = useIsUploading()
   const filter = TYPE_FILTERS[typeFilter]
+  const queuedCount = uploads.filter((u) => u.status === 'queued').length
 
   function handleUpload() {
     // Nothing selected yet → open the file browser instead
-    if (!staged.length) {
+    if (!queuedCount) {
       dropzoneRef.current?.browse()
       return
     }
-    upload.mutate(staged, { onSuccess: clearStaged })
+    uploadQueued()
   }
 
   return (
@@ -39,7 +40,7 @@ export function UploadPanel() {
         hint={filter.hint}
         maxSize={MAX_UPLOAD_SIZE}
         error={dropError}
-        onFiles={addStaged}
+        onFiles={addFiles}
       />
 
       <div className="field">
@@ -53,17 +54,16 @@ export function UploadPanel() {
         />
       </div>
 
-      <Button icon="upload" block disabled={upload.isPending} onClick={handleUpload}>
-        {upload.isPending ? 'Uploading…' : staged.length > 1 ? `Upload ${staged.length} Files` : 'Upload Files'}
+      <Button icon="upload" block disabled={uploading && !queuedCount} onClick={handleUpload}>
+        {queuedCount > 1 ? `Upload ${queuedCount} Files` : uploading && !queuedCount ? 'Uploading…' : 'Upload Files'}
       </Button>
 
-      {upload.isError && (
-        <p className="upload-panel__error" role="alert">
-          Upload failed: {upload.error.message}
-        </p>
-      )}
-
-      <StagedFileList files={staged} onRemove={removeStaged} />
+      <UploadQueue
+        items={uploads.map((u) => ({ ...u, name: u.file.name, size: u.file.size }))}
+        onRemove={removeUpload}
+        onRetry={retry}
+        onCancel={cancel}
+      />
     </div>
   )
 }

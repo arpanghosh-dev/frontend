@@ -42,7 +42,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.2);
+  box-shadow: var(--shadow-pop);
   display: none;
 }
 .dropdown--align-right .dropdown__menu { left: auto; right: 0; }

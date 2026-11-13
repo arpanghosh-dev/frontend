@@ -1,0 +1,22 @@
+.storage-limit-form { display: flex; flex-direction: column; gap: 16px; }
+
+.storage-limit-form__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.storage-limit-form__stats div {
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.storage-limit-form__stats dt {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--subtle);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.storage-limit-form__stats dd { margin: 2px 0 0; font-size: 13px; font-weight: 600; color: var(--text-2); }

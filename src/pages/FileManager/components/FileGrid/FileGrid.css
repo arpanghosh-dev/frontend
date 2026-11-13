@@ -6,7 +6,7 @@
 
 .file-grid__skeleton {
   height: 146px;
-  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background: linear-gradient(90deg, var(--skeleton-a) 0%, var(--skeleton-b) 50%, var(--skeleton-a) 100%);
   background-size: 200% 100%;
   border-radius: var(--radius-lg);
   animation: shimmer 1.2s linear infinite;
@@ -36,6 +36,10 @@
 .file-grid__state--error .file-grid__state-icon { color: var(--danger); background: var(--danger-soft); }
 .file-grid__state-title { margin: 4px 0 0; font-weight: 600; color: var(--text); }
 .file-grid__state-text { margin: 0 0 6px; font-size: 12.5px; }
+
+.file-grid.is-refreshing { opacity: 0.6; transition: opacity 0.15s; }
+
+.file-grid__more { display: flex; justify-content: center; padding: 20px 0 4px; }
 
 @keyframes shimmer { to { background-position: -200% 0; } }
 

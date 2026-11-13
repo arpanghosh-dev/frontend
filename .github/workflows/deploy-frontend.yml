@@ -38,18 +38,6 @@ jobs:
           # Vite bakes VITE_* vars into the bundle at build time
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
-      # TEMPORARY: prints the OIDC claims AWS checks in the trust policy. Remove once login works.
-      - name: Debug OIDC claims
-        run: |
-          TOKEN=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
-          P=$(echo "$TOKEN" | cut -d. -f2 | tr '_-' '/+')
-          while [ $(( ${#P} % 4 )) -ne 0 ]; do P="$P="; done
-          echo "$P" | base64 -d | jq '{sub, aud, iss, repository, environment, ref}'
-          echo "Role ARN length: ${#ROLE}  (should be > 0)"
-        env:
-          ROLE: ${{ secrets.AWS_ROLE_ARN }}
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:

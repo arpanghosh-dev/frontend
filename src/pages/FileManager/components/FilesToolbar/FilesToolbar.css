@@ -1,0 +1,14 @@
+.files-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 24px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.files-toolbar__hint { font-size: 11.5px; color: var(--subtle); }
+
+@media (max-width: 560px) {
+  .files-toolbar { flex-direction: column; align-items: flex-start; padding: 0 16px 12px; }
+}

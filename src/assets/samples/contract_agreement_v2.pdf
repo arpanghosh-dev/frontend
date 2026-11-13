@@ -1,0 +1,46 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 823 >>
+stream
+0.31 0.27 0.9 rg 0 702 612 90 re f
+1 1 1 rg BT /F1 22 Tf 56 748 Td (Service Agreement) Tj ET
+0.88 0.9 1 rg BT /F2 11 Tf 56 726 Td (Contract ref. SA-2024-0915 - Signed) Tj ET
+0.9 0.91 0.93 RG 1 w 56 668 m 556 668 l S
+0.06 0.09 0.16 rg BT /F1 13 Tf 56 640 Td (1. Parties) Tj ET
+0.2 0.25 0.33 rg BT /F2 11 Tf 56 616 Td (This agreement is entered into by the Client and the Provider.) Tj ET
+0.06 0.09 0.16 rg BT /F1 13 Tf 56 598 Td (2. Term) Tj ET
+0.2 0.25 0.33 rg BT /F2 11 Tf 56 574 Td (Twelve \(12\) months from the effective date, renewing annually.) Tj ET
+0.06 0.09 0.16 rg BT /F1 13 Tf 56 556 Td (3. Signatures) Tj ET
+0.2 0.25 0.33 rg BT /F2 11 Tf 56 532 Td (Digitally signed and verified on September 15, 2024.) Tj ET
+0.58 0.64 0.72 rg BT /F2 9 Tf 56 40 Td (Generated sample document - File Manager design preview) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000001125 00000 n 
+0000001200 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1270
+%%EOF

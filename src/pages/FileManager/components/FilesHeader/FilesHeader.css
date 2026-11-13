@@ -1,0 +1,24 @@
+.files-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 16px;
+  background: var(--surface);
+}
+.files-header__title-row { display: flex; align-items: center; gap: 10px; }
+.files-header__title { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.files-header__subtitle { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); }
+
+.count-pill {
+  padding: 2px 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: 999px;
+}
+
+@media (max-width: 560px) {
+  .files-header { flex-direction: column; padding: 18px 16px 12px; }
+}
